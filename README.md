@@ -1,4 +1,4 @@
-# chatapp
+# Chat App
 
 The Chat App Project I using languages Javascript/TypeScript
 
