@@ -1,6 +1,6 @@
 # Chat App
 
-The Chat App Project I using languages Javascript/TypeScript
+The Chat Application Project I use languages Javascript/TypeScript
 
 **Back-End**:  Nodejs/Express/Socket.io.
 
