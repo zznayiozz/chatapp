@@ -4,27 +4,11 @@ import Header from 'components/Header'
 import Sidebar from 'components/sidebar/Sidebar'
 import RightPane from 'components/rightPane/RightPane'
 import MainChat from 'components/mainChat'
-import { io } from 'socket.io-client'
-import { useEffect } from 'react'
+// import { io } from 'socket.io-client'
+// const socket = io('ws://localhost:5000')
 
 function Home() {
   const classes = useStyles()
-
-  useEffect(() => {
-    const socket = io('ws://localhost:5000')
-
-    socket.on('connnection', () => {
-      console.log('connected to server')
-    })
-
-    socket.on('message', (message) => {
-      console.log(message)
-    })
-
-    socket.on('disconnect', () => {
-      console.log('Socket disconnecting')
-    })
-  }, [])
 
   return (
     <div className={classes.root}>

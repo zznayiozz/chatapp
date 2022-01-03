@@ -1,23 +1,38 @@
 import { Grid, Button, TextField, createStyles, makeStyles, Theme } from '@material-ui/core'
 import { nanoid } from '@reduxjs/toolkit'
-import { findByLabelText } from '@testing-library/react'
 import { useAppDispatch } from 'app/hooks'
+import axios from 'axios'
 import { addMessage } from 'features/messages/messagesSlice'
 import React, { useRef } from 'react'
+import { io } from 'socket.io-client'
+
+const LOCAL_STORAGE_AUTH = 'AUTH_TOCKEN'
+
+const socket = io('ws://localhost:5000')
 
 function BoxChat() {
   const dispatch = useAppDispatch()
   const classes = useStyles()
   const inputMessageRef = useRef<any>(null)
+  const currentUser = localStorage.getItem(LOCAL_STORAGE_AUTH)
+  const hasUser = currentUser ? JSON.parse(currentUser) : null
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     if (!inputMessageRef.current) return
     inputMessageRef.current.value = event.target.value
   }
 
-  const handlePostMessage = () => {
+  const handlePostMessage = async () => {
     if (!inputMessageRef.current.value) return
     dispatch(addMessage({ id: nanoid(), messages: inputMessageRef.current.value, userId: 'jfdghskd' }))
+    await axios.post(
+      'http://localhost:5000/api/postevent',
+      { message: inputMessageRef.current.value },
+      {
+        headers: { Authorization: `Bearer ${hasUser.accessTocken}` },
+      }
+    )
+    socket.emit('message', inputMessageRef.current.value)
     inputMessageRef.current.value = null
   }
 

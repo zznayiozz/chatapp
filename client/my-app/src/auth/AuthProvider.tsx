@@ -1,5 +1,8 @@
-import axios from 'axios'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { fetchUserLogin } from 'features/authentication/userSlice'
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+
 const LOCAL_STORAGE_AUTH = 'AUTH_TOCKEN'
 
 interface AuthContextType {
@@ -11,18 +14,26 @@ interface AuthContextType {
 let AuthContext = React.createContext<AuthContextType>(null!)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch()
   let [user, setUser] = React.useState<any>({
     userName: '',
     password: '',
   })
 
   const signin = async (userName = '', password = '', callback: VoidFunction) => {
-    const response = await axios.post('http://localhost:5000/api/auth/login', { userName, password })
+    try {
+      const resultAction: any = await dispatch(fetchUserLogin({ userName, password }))
+      const originalPromiseResult = unwrapResult(resultAction)
+      const { success } = originalPromiseResult
 
-    if (response.data.success) {
-      setUser(response.data)
-      localStorage.setItem(LOCAL_STORAGE_AUTH, JSON.stringify(response.data))
-    } else {
+      if (success) {
+        setUser(originalPromiseResult)
+        localStorage.setItem(LOCAL_STORAGE_AUTH, JSON.stringify(originalPromiseResult))
+      } else {
+        localStorage.removeItem(LOCAL_STORAGE_AUTH)
+      }
+    } catch (rejectedValueOrSerializedError) {
+      // handle error here
       localStorage.removeItem(LOCAL_STORAGE_AUTH)
     }
 

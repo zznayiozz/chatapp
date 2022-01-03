@@ -29,6 +29,10 @@ function Header() {
         <Typography variant="h6" className={classes.title}>
           News
         </Typography>
+        <Button color="inherit" onClick={() => navigate('/post')}>
+          Post
+        </Button>
+
         <Button
           color="inherit"
           onClick={() =>

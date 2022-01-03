@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Login from 'layouts/authentication/Login'
 import Register from 'layouts/authentication/Register'
 import Home from 'layouts/home'
+import Post from 'layouts/post'
+
 import { AuthProvider } from 'auth/AuthProvider'
 import { RequireAuth } from 'auth/RequireAuth'
 import { NotRequireAuth } from 'auth/NotRequireAuth'
@@ -39,6 +41,14 @@ function App() {
               element={
                 <RequireAuth>
                   <Home />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/post"
+              element={
+                <RequireAuth>
+                  <Post />
                 </RequireAuth>
               }
             />

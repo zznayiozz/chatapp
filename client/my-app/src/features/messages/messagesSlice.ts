@@ -5,10 +5,10 @@ const initialState = {
 }
 
 export const postsSlice = createSlice({
-  name: 'posts',
+  name: 'messages',
   initialState,
   reducers: {
-    addMessage: (state, action) => {
+    addMessage: (state: { messages: any[] }, action) => {
       state.messages.push(action.payload)
     },
   },
